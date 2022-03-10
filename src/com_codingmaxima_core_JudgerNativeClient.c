@@ -93,7 +93,8 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
             jstring jargsItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, args, i - 1));
              char *cargsItem = (char *)((*jniEnv)->GetStringUTFChars(jniEnv, jargsItem, NULL));
             _config.args[i] = cargsItem;
-            //(*jniEnv)->ReleaseStringUTFChars(jniEnv, inJNIStr, inCStr);
+
+            (*jniEnv)->ReleaseStringUTFChars(jniEnv, jargsItem, cargsItem);
         }
     }
     _config.args[i] = NULL;
@@ -105,7 +106,8 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
             jstring jenvItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, env, i));
              char *cenvItem = (char *)((*jniEnv)->GetStringUTFChars(jniEnv, jenvItem, NULL));
             _config.env[i] = cenvItem;
-            //(*jniEnv)->ReleaseStringUTFChars(jniEnv, inJNIStr, inCStr);
+
+            (*jniEnv)->ReleaseStringUTFChars(jniEnv, jenvItem, cenvItem);
         }
     }
     _config.env[i] = NULL;
@@ -133,30 +135,18 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
 
     run(&_config, &_result);
 
-    /*printf("{\n"
-           "    \"cpu_time\": %d,\n"
-           "    \"real_time\": %d,\n"
-           "    \"memory\": %ld,\n"
-           "    \"signal\": %d,\n"
-           "    \"exit_code\": %d,\n"
-           "    \"error\": %d,\n"
-           "    \"result\": %d\n"
-           "}",
-           _result.cpu_time,
-           _result.real_time,
-           _result.memory,
-           _result.signal,
-           _result.exit_code,
-           _result.error,
-           _result.result);*/
+    // Release resources
+    (*jniEnv)->ReleaseStringUTFChars(jniEnv, exe_path, _config.exe_path);
+    (*jniEnv)->ReleaseStringUTFChars(jniEnv, input_file, _config.input_path);
+    (*jniEnv)->ReleaseStringUTFChars(jniEnv, output_file, _config.output_path);
+    (*jniEnv)->ReleaseStringUTFChars(jniEnv, error_file, _config.error_path);
+    (*jniEnv)->ReleaseStringUTFChars(jniEnv, log_path, _config.log_path);
 
    jint jResult[] = {_result.cpu_time, _result.real_time, _result.memory, _result.signal, _result.exit_code, _result.error, _result.result};
 
    jintArray outJNIArray = (*jniEnv)->NewIntArray(jniEnv, 7);  // allocate
    if (NULL == outJNIArray) return NULL;
    (*jniEnv)->SetIntArrayRegion(jniEnv, outJNIArray, 0 , 7, jResult);  // copy
-
-   // release jResult array
 
    return outJNIArray;
 }
