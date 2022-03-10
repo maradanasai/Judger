@@ -1,5 +1,6 @@
 #include "jni.h"        // JNI header provided by JDK
 #include <stdio.h>      // C Standard IO Header
+#include <string.h>
 #include "com_codingmaxima_core_JudgerNativeClient.h"   // Generated
 #include "runner.h"
 
@@ -92,7 +93,8 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
         for (; i < argsCount + 1; i++) {
             jstring jargsItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, args, i - 1));
              char *cargsItem = (char *)((*jniEnv)->GetStringUTFChars(jniEnv, jargsItem, NULL));
-            _config.args[i] = cargsItem;
+             char tempcargsItem[(*jniEnv)->GetStringLength(jniEnv, jargsItem)];
+            _config.args[i] = strcpy(tempcargsItem, cargsItem);
 
             (*jniEnv)->ReleaseStringUTFChars(jniEnv, jargsItem, cargsItem);
         }
@@ -105,7 +107,8 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
         for (; i < envCount; i++) {
             jstring jenvItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, env, i));
              char *cenvItem = (char *)((*jniEnv)->GetStringUTFChars(jniEnv, jenvItem, NULL));
-            _config.env[i] = cenvItem;
+             char tempcEnvItem[(*jniEnv)->GetStringLength(jniEnv, jenvItem)];
+            _config.env[i] = strcpy(tempcEnvItem, cenvItem);
 
             (*jniEnv)->ReleaseStringUTFChars(jniEnv, jenvItem, cenvItem);
         }
