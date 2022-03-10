@@ -1,9 +1,9 @@
 #include "jni.h"        // JNI header provided by JDK
 #include <stdio.h>      // C Standard IO Header
-#include "JudgerNativeClient.h"   // Generated
+#include "com_codingmaxima_core_JudgerNativeClient.h"   // Generated
 #include "runner.h"
 
-JNIEXPORT jintArray JNICALL Java_JudgerNativeClient_judge(JNIEnv *jniEnv, jclass cls,
+JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(JNIEnv *jniEnv, jclass cls,
     jint max_cpu_time,
     jint max_real_time,
     jint max_memory,
