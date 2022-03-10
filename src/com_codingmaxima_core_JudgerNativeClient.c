@@ -93,10 +93,10 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
         for (; i < argsCount + 1; i++) {
             jstring jargsItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, args, i - 1));
              char *cargsItem = (char *)((*jniEnv)->GetStringUTFChars(jniEnv, jargsItem, NULL));
-             char tempcargsItem[(*jniEnv)->GetStringLength(jniEnv, jargsItem)];
-            _config.args[i] = strcpy(tempcargsItem, cargsItem);
+             //char tempcargsItem[(*jniEnv)->GetStringLength(jniEnv, jargsItem)];
+            _config.args[i] = cargsItem; //strcpy(tempcargsItem, cargsItem);
 
-            (*jniEnv)->ReleaseStringUTFChars(jniEnv, jargsItem, cargsItem);
+            //(*jniEnv)->ReleaseStringUTFChars(jniEnv, jargsItem, cargsItem);
         }
     }
     _config.args[i] = NULL;
@@ -107,10 +107,10 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
         for (; i < envCount; i++) {
             jstring jenvItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, env, i));
              char *cenvItem = (char *)((*jniEnv)->GetStringUTFChars(jniEnv, jenvItem, NULL));
-             char tempcEnvItem[(*jniEnv)->GetStringLength(jniEnv, jenvItem)];
-            _config.env[i] = strcpy(tempcEnvItem, cenvItem);
+             //char tempcEnvItem[(*jniEnv)->GetStringLength(jniEnv, jenvItem)];
+            _config.env[i] = cenvItem; //strcpy(tempcEnvItem, cenvItem);
 
-            (*jniEnv)->ReleaseStringUTFChars(jniEnv, jenvItem, cenvItem);
+            //(*jniEnv)->ReleaseStringUTFChars(jniEnv, jenvItem, cenvItem);
         }
     }
     _config.env[i] = NULL;
