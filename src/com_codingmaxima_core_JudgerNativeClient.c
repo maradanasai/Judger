@@ -144,12 +144,23 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
     (*jniEnv)->ReleaseStringUTFChars(jniEnv, output_file, _config.output_path);
     (*jniEnv)->ReleaseStringUTFChars(jniEnv, error_file, _config.error_path);
     (*jniEnv)->ReleaseStringUTFChars(jniEnv, log_path, _config.log_path);
+    int i;
+    for (i = 0; i < argsCount; i++) {
+        /*jstring jargsItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, args, i));
+        (*jniEnv)->ReleaseStringUTFChars(jniEnv, jargsItem, _config.args[i]);*/
+        _config.args[i] = NULL;
+    }
+    for (i = 0; i < envCount; i++) {
+        /*jstring jenvItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, env, i));
+        (*jniEnv)->ReleaseStringUTFChars(jniEnv, jenvItem, _config.env[i]);*/
+        _config.env[i] = NULL;
+    }
 
-   jint jResult[] = {_result.cpu_time, _result.real_time, _result.memory, _result.signal, _result.exit_code, _result.error, _result.result};
+    jint jResult[] = {_result.cpu_time, _result.real_time, _result.memory, _result.signal, _result.exit_code, _result.error, _result.result};
 
-   jintArray outJNIArray = (*jniEnv)->NewIntArray(jniEnv, 7);  // allocate
-   if (NULL == outJNIArray) return NULL;
-   (*jniEnv)->SetIntArrayRegion(jniEnv, outJNIArray, 0 , 7, jResult);  // copy
+    jintArray outJNIArray = (*jniEnv)->NewIntArray(jniEnv, 7);  // allocate
+    if (NULL == outJNIArray) return NULL;
+    (*jniEnv)->SetIntArrayRegion(jniEnv, outJNIArray, 0 , 7, jResult);  // copy
 
-   return outJNIArray;
+    return outJNIArray;
 }
