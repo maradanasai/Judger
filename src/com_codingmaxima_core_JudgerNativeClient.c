@@ -93,10 +93,7 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
         for (; i < argsCount + 1; i++) {
             jstring jargsItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, args, i - 1));
              char *cargsItem = (char *)((*jniEnv)->GetStringUTFChars(jniEnv, jargsItem, NULL));
-             //char tempcargsItem[(*jniEnv)->GetStringLength(jniEnv, jargsItem)];
-            _config.args[i] = cargsItem; //strcpy(tempcargsItem, cargsItem);
-
-            //(*jniEnv)->ReleaseStringUTFChars(jniEnv, jargsItem, cargsItem);
+            _config.args[i] = cargsItem;
         }
     }
     _config.args[i] = NULL;
@@ -107,10 +104,7 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
         for (; i < envCount; i++) {
             jstring jenvItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, env, i));
              char *cenvItem = (char *)((*jniEnv)->GetStringUTFChars(jniEnv, jenvItem, NULL));
-             //char tempcEnvItem[(*jniEnv)->GetStringLength(jniEnv, jenvItem)];
-            _config.env[i] = cenvItem; //strcpy(tempcEnvItem, cenvItem);
-
-            //(*jniEnv)->ReleaseStringUTFChars(jniEnv, jenvItem, cenvItem);
+            _config.env[i] = cenvItem;
         }
     }
     _config.env[i] = NULL;
@@ -144,16 +138,13 @@ JNIEXPORT jintArray JNICALL Java_com_codingmaxima_core_JudgerNativeClient_judge(
     (*jniEnv)->ReleaseStringUTFChars(jniEnv, output_file, _config.output_path);
     (*jniEnv)->ReleaseStringUTFChars(jniEnv, error_file, _config.error_path);
     (*jniEnv)->ReleaseStringUTFChars(jniEnv, log_path, _config.log_path);
-    int i;
-    for (i = 0; i < argsCount; i++) {
-        /*jstring jargsItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, args, i));
-        (*jniEnv)->ReleaseStringUTFChars(jniEnv, jargsItem, _config.args[i]);*/
-        _config.args[i] = NULL;
+    for (i = 1; i < argsCount; i++) {
+        jstring jargsItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, args, i - 1));
+        (*jniEnv)->ReleaseStringUTFChars(jniEnv, jargsItem, _config.args[i]);
     }
     for (i = 0; i < envCount; i++) {
-        /*jstring jenvItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, env, i));
-        (*jniEnv)->ReleaseStringUTFChars(jniEnv, jenvItem, _config.env[i]);*/
-        _config.env[i] = NULL;
+        jstring jenvItem = (jstring) ((*jniEnv)->GetObjectArrayElement(jniEnv, env, i));
+        (*jniEnv)->ReleaseStringUTFChars(jniEnv, jenvItem, _config.env[i]);
     }
 
     jint jResult[] = {_result.cpu_time, _result.real_time, _result.memory, _result.signal, _result.exit_code, _result.error, _result.result};
