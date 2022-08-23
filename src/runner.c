@@ -36,7 +36,7 @@ void run(struct config *_config, struct result *_result) {
     // check whether current user is root
     uid_t uid = getuid();
     if (uid != 0) {
-        ERROR_EXIT(ROOT_REQUIRED);
+        //ERROR_EXIT(ROOT_REQUIRED);
     }
 
     // check args
