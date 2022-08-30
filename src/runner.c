@@ -34,10 +34,10 @@ void run(struct config *_config, struct result *_result) {
     init_result(_result);
 
     // check whether current user is root
-    uid_t uid = getuid();
+    /*uid_t uid = getuid();
     if (uid != 0) {
-        //ERROR_EXIT(ROOT_REQUIRED);
-    }
+        ERROR_EXIT(ROOT_REQUIRED);
+    }*/
 
     // check args
     if ((_config->max_cpu_time < 1 && _config->max_cpu_time != UNLIMITED) ||
